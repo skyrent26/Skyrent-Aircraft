@@ -1,1 +1,1342 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SkyRent Dashboard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        .hero {
+            min-height: 100vh;
+            padding-bottom: 90px;
+            background:
+                linear-gradient(rgba(255,255,255,0.90), rgba(255,255,255,0.96)),
+                url("images/skybg.jpg") center/cover no-repeat fixed;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 520px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+
+        /* HEADER */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            width: 105px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .welcome {
+            text-align: right;
+        }
+
+        .welcome small {
+            display: block;
+            color: #777;
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+
+        .welcome h3 {
+            font-size: 16px;
+            color: #111;
+        }
+
+        /* BALANCE CARD */
+        .balance-card {
+            background: linear-gradient(135deg, #0d6efd, #0047ab);
+            color: white;
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 8px 25px rgba(0, 71, 171, 0.25);
+            margin-bottom: 16px;
+        }
+
+        .balance-label {
+            font-size: 13px;
+            opacity: 0.85;
+            margin-bottom: 6px;
+        }
+
+        .balance {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .balance-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .balance-actions button {
+            flex: 1;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .deposit-btn {
+            background: white;
+            color: #075dc9;
+        }
+
+        .withdraw-btn {
+            background: rgba(255,255,255,0.18);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.5) !important;
+        }
+
+        /* STATS */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 14px;
+            padding: 15px 8px;
+            text-align: center;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+        }
+
+        .stat-card small {
+            display: block;
+            color: #777;
+            font-size: 10px;
+            margin-bottom: 7px;
+        }
+
+        .stat-card strong {
+            display: block;
+            font-size: 14px;
+            color: #111;
+            word-break: break-word;
+        }
+
+        /* INVESTMENT */
+        .section-card {
+            background: white;
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .section-title h3 {
+            font-size: 16px;
+        }
+
+        .view-link {
+            color: #0d6efd;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .investment-box {
+            background: #f4f8ff;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .investment-number {
+            font-size: 30px;
+            font-weight: bold;
+            color: #0d6efd;
+            margin-bottom: 5px;
+        }
+
+        .investment-message {
+            color: #777;
+            font-size: 12px;
+        }
+
+        /* QUICK ACTIONS */
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .quick-action {
+            background: #f7f9fc;
+            border-radius: 12px;
+            padding: 14px 7px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .quick-action:hover {
+            transform: translateY(-2px);
+            background: #eef5ff;
+        }
+
+        .quick-icon {
+            font-size: 23px;
+            margin-bottom: 7px;
+        }
+
+        .quick-action span {
+            display: block;
+            font-size: 11px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* BOTTOM NAVIGATION */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 72px;
+            background: white;
+            border-top: 1px solid #e5e5e5;
+            display: flex;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .nav-inner {
+            width: 100%;
+            max-width: 520px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            font-size: 10px;
+            color: #777;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .nav-item .nav-icon {
+            font-size: 20px;
+        }
+
+        .nav-item.active {
+            color: #0d6efd;
+            font-weight: bold;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 380px) {
+            .container {
+                padding: 15px 10px;
+            }
+
+            .balance {
+                font-size: 28px;
+            }
+
+            .stat-card {
+                padding: 13px 5px;
+            }
+
+            .quick-action {
+                padding: 12px 5px;
+            }
+
+            .quick-action span {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="hero">
+
+    <main class="container">
+
+        <!-- HEADER -->
+        <div class="header">
+
+            <img
+                src="skyrent.logo.png"
+                alt="SkyRent Logo"
+                class="logo"
+            >
+
+            <div class="welcome">
+                <small>Welcome back</small>
+                <h3 id="username">User!</h3>
+            </div>
+
+        </div>
+
+
+        <!-- BALANCE -->
+        <section class="balance-card">
+
+            <div class="balance-label">
+                Available Balance
+            </div>
+
+            <div class="balance" id="accountBalance">
+                ₱0.00
+            </div>
+
+            <div class="balance-actions">
+
+                <button
+                    class="deposit-btn"
+                    onclick="goToDeposit()"
+                >
+                    + Deposit
+                </button>
+
+                <button
+                    class="withdraw-btn"
+                    onclick="goToWithdrawal()"
+                >
+                    Withdraw
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- STATISTICS -->
+        <section class="stats">
+
+            <div class="stat-card">
+                <small>Total Deposited</small>
+                <strong id="totalDeposited">₱0.00</strong>
+            </div>
+
+            <div class="stat-card">
+                <small>Total Earnings</small>
+                <strong id="totalEarnings">₱0.00</strong>
+            </div>
+
+            <div class="stat-card">
+                <small>Total Withdrawn</small>
+                <strong id="totalWithdrawn">₱0.00</strong>
+            </div>
+
+        </section>
+
+
+        <!-- MY INVESTMENT -->
+        <section class="section-card">
+
+            <div class="section-title">
+
+                <h3>My Investment</h3>
+
+                <span
+                    class="view-link"
+                    onclick="goToMyAircraft()"
+                >
+                    View All
+                </span>
+
+            </div>
+
+            <div class="investment-box">
+
+                <div
+                    class="investment-number"
+                    id="investmentCount"
+                >
+                    0
+                </div>
+
+                <div
+                    class="investment-message"
+                    id="investmentMessage"
+                >
+                    No active investment yet.
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- QUICK ACTIONS -->
+        <section class="section-card">
+
+            <div class="section-title">
+                <h3>Quick Actions</h3>
+            </div>
+
+            <div class="quick-grid">
+
+                <div
+                    class="quick-action"
+                    onclick="goToCrafts()"
+                >
+                    <div class="quick-icon">✈️</div>
+                    <span>Crafts</span>
+                </div>
+
+                <div
+                    class="quick-action"
+                    onclick="goToTransactions()"
+                >
+                    <div class="quick-icon">📋</div>
+                    <span>Transactions</span>
+                </div>
+
+                <div
+                    class="quick-action"
+                    onclick="goToProfile()"
+                >
+                    <div class="quick-icon">👤</div>
+                    <span>Profile</span>
+                </div>
+
+                <div
+                    class="quick-action"
+                    onclick="goToGiftCodes()"
+                >
+                    <div class="quick-icon">🎁</div>
+                    <span>Gift Codes</span>
+                </div>
+
+                <div
+                    class="quick-action"
+                    onclick="goToCustomerService()"
+                >
+                    <div class="quick-icon">💬</div>
+                    <span>Customer Service</span>
+                </div>
+
+                <div
+                    class="quick-action"
+                    onclick="goToNetwork()"
+                >
+                    <div class="quick-icon">👥</div>
+                    <span>Network</span>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- BOTTOM NAVIGATION -->
+<nav class="bottom-nav">
+
+    <div class="nav-inner">
+
+        <div
+            class="nav-item active"
+            onclick="goToDashboard()"
+        >
+            <div class="nav-icon">🏠</div>
+            <span>Home</span>
+        </div>
+
+        <div
+            class="nav-item"
+            onclick="goToCrafts()"
+        >
+            <div class="nav-icon">✈️</div>
+            <span>Crafts</span>
+        </div>
+
+        <div
+            class="nav-item"
+            onclick="goToNetwork()"
+        >
+            <div class="nav-icon">👥</div>
+            <span>Network</span>
+        </div>
+
+        <div
+            class="nav-item"
+            onclick="goToEarnings()"
+        >
+            <div class="nav-icon">💰</div>
+            <span>Earnings</span>
+        </div>
+
+        <div
+            class="nav-item"
+            onclick="logout()"
+        >
+            <div class="nav-icon">🚪</div>
+            <span>Logout</span>
+        </div>
+
+    </div>
+
+</nav>
+
+
+<script>
+
+    /* =========================================
+       USER
+    ========================================= */
+
+    function getCurrentUser() {
+
+        const savedUser = localStorage.getItem("skyrentUser");
+
+        if (!savedUser) {
+            return null;
+        }
+
+        try {
+            return JSON.parse(savedUser);
+        } catch (error) {
+            console.error("Unable to read user:", error);
+            return null;
+        }
+    }
+
+
+    function getCurrentPhone() {
+
+        const user = getCurrentUser();
+
+        if (!user) {
+            return "";
+        }
+
+        return String(user.phone || "").trim();
+    }
+
+
+    /* =========================================
+       MONEY
+    ========================================= */
+
+    function formatMoney(amount) {
+
+        const value = Number(amount) || 0;
+
+        return value.toLocaleString("en-PH", {
+            style: "currency",
+            currency: "PHP",
+            minimumFractionDigits: 2
+        });
+    }
+
+
+    function moneyValue(value) {
+
+        if (typeof value === "number") {
+            return value;
+        }
+
+        if (value === null || value === undefined) {
+            return 0;
+        }
+
+        const cleaned = String(value)
+            .replace(/₱/g, "")
+            .replace(/,/g, "")
+            .replace(/\s/g, "");
+
+        const number = parseFloat(cleaned);
+
+        return isNaN(number) ? 0 : number;
+    }
+
+
+    /* =========================================
+       USERNAME
+    ========================================= */
+
+    function updateUsername() {
+
+        const user = getCurrentUser();
+
+        const usernameElement =
+            document.getElementById("username");
+
+        if (!usernameElement) {
+            return;
+        }
+
+        if (user && user.name) {
+            usernameElement.textContent =
+                user.name + "!";
+        } else {
+            usernameElement.textContent =
+                "User!";
+        }
+    }
+
+
+    /* =========================================
+       BALANCE
+    ========================================= */
+
+    function updateAccountBalance() {
+
+        const phone = getCurrentPhone();
+
+        if (!phone) {
+            document.getElementById("accountBalance")
+                .textContent = formatMoney(0);
+            return;
+        }
+
+        const savedBalance =
+            localStorage.getItem("balance_" + phone);
+
+        const balance =
+            moneyValue(savedBalance);
+
+        document.getElementById("accountBalance")
+            .textContent = formatMoney(balance);
+    }
+
+
+    /* =========================================
+       TOTAL DEPOSITED
+    ========================================= */
+
+    function updateTotalDeposited() {
+
+        const phone = getCurrentPhone();
+
+        let total = 0;
+
+        if (!phone) {
+            document.getElementById("totalDeposited")
+                .textContent = formatMoney(0);
+            return;
+        }
+
+        const key = "deposits_" + phone;
+
+        const savedDeposits =
+            localStorage.getItem(key);
+
+        if (savedDeposits) {
+
+            try {
+
+                const deposits =
+                    JSON.parse(savedDeposits);
+
+                if (Array.isArray(deposits)) {
+
+                    deposits.forEach(function(deposit) {
+
+                        const status =
+                            String(deposit.status || "")
+                                .toLowerCase()
+                                .trim();
+
+                        if (status === "approved") {
+
+                            total += moneyValue(
+                                deposit.amount
+                            );
+
+                        }
+
+                    });
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Unable to read deposits:",
+                    error
+                );
+
+            }
+
+        }
+
+        document.getElementById("totalDeposited")
+            .textContent = formatMoney(total);
+    }
+
+
+    /* =========================================
+       TOTAL WITHDRAWN
+    ========================================= */
+
+    function updateTotalWithdrawn() {
+
+        const phone = getCurrentPhone();
+
+        let total = 0;
+
+        if (!phone) {
+            document.getElementById("totalWithdrawn")
+                .textContent = formatMoney(0);
+            return;
+        }
+
+        const key = "withdrawals_" + phone;
+
+        const savedWithdrawals =
+            localStorage.getItem(key);
+
+        if (savedWithdrawals) {
+
+            try {
+
+                const withdrawals =
+                    JSON.parse(savedWithdrawals);
+
+                if (Array.isArray(withdrawals)) {
+
+                    withdrawals.forEach(function(withdrawal) {
+
+                        const status =
+                            String(withdrawal.status || "")
+                                .toLowerCase()
+                                .trim();
+
+                        if (
+                            status === "approved" ||
+                            status === "withdrawal successful"
+                        ) {
+
+                            total += moneyValue(
+                                withdrawal.amount
+                            );
+
+                        }
+
+                    });
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Unable to read withdrawals:",
+                    error
+                );
+
+            }
+
+        }
+
+        document.getElementById("totalWithdrawn")
+            .textContent = formatMoney(total);
+    }
+
+
+    /* =========================================
+       TOTAL EARNINGS
+    ========================================= */
+
+    function updateTotalEarnings() {
+
+        const phone = getCurrentPhone();
+
+        let total = 0;
+
+        if (!phone) {
+            document.getElementById("totalEarnings")
+                .textContent = formatMoney(0);
+            return;
+        }
+
+
+        /* Earnings History */
+
+        const earningsKey =
+            "earningsHistory_" + phone;
+
+        const savedEarnings =
+            localStorage.getItem(earningsKey);
+
+        if (savedEarnings) {
+
+            try {
+
+                const earnings =
+                    JSON.parse(savedEarnings);
+
+                if (Array.isArray(earnings)) {
+
+                    earnings.forEach(function(item) {
+
+                        const type =
+                            String(item.type || "")
+                                .toLowerCase();
+
+                        if (
+                            !type.includes("commission") &&
+                            !type.includes("bonus")
+                        ) {
+
+                            total += moneyValue(
+                                item.amount ??
+                                item.daily ??
+                                item.dailyIncome ??
+                                item.income ??
+                                0
+                            );
+
+                        }
+
+                    });
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Unable to read earnings:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /* Referral Commissions */
+
+        const referralData =
+            localStorage.getItem("referralCommissions");
+
+        if (referralData) {
+
+            try {
+
+                const commissions =
+                    JSON.parse(referralData);
+
+                if (Array.isArray(commissions)) {
+
+                    commissions.forEach(function(item) {
+
+                        if (
+                            String(item.ownerPhone || "") !==
+                            phone
+                        ) {
+                            return;
+                        }
+
+                        const status =
+                            String(item.status || "")
+                                .toLowerCase();
+
+                        if (
+                            status === "reversed" ||
+                            status === "cancelled" ||
+                            status === "canceled"
+                        ) {
+                            return;
+                        }
+
+                        total += moneyValue(
+                            item.commission
+                        );
+
+                    });
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Unable to read commissions:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /* Bonuses */
+
+        const bonusKeys = [
+            "registrationBonus_" + phone,
+            "bonuses_" + phone,
+            "bonusHistory_" + phone,
+            "userBonuses_" + phone,
+            "bonuses",
+            "bonusHistory"
+        ];
+
+        const seenBonuses = new Set();
+
+        bonusKeys.forEach(function(key) {
+
+            const data =
+                localStorage.getItem(key);
+
+            if (!data) {
+                return;
+            }
+
+            try {
+
+                const bonuses =
+                    JSON.parse(data);
+
+                const list =
+                    Array.isArray(bonuses)
+                        ? bonuses
+                        : [bonuses];
+
+                list.forEach(function(item, index) {
+
+                    if (!item) {
+                        return;
+                    }
+
+                    if (
+                        item.ownerPhone &&
+                        String(item.ownerPhone) !== phone
+                    ) {
+                        return;
+                    }
+
+                    if (
+                        item.phone &&
+                        String(item.phone) !== phone
+                    ) {
+                        return;
+                    }
+
+                    const uniqueId =
+                        item.id ||
+                        item.bonusId ||
+                        (
+                            key +
+                            "_" +
+                            index
+                        );
+
+                    if (seenBonuses.has(uniqueId)) {
+                        return;
+                    }
+
+                    seenBonuses.add(uniqueId);
+
+                    total += moneyValue(
+                        item.amount ??
+                        item.bonus ??
+                        item.reward ??
+                        item.value ??
+                        0
+                    );
+
+                });
+
+            } catch (error) {
+
+                console.error(
+                    "Unable to read bonuses:",
+                    error
+                );
+
+            }
+
+        });
+
+
+        /* Gift Code Claims */
+
+        const giftData =
+            localStorage.getItem("giftCodeClaims");
+
+        if (giftData) {
+
+            try {
+
+                const claims =
+                    JSON.parse(giftData);
+
+                if (Array.isArray(claims)) {
+
+                    const seenClaims = new Set();
+
+                    claims.forEach(function(item, index) {
+
+                        if (!item) {
+                            return;
+                        }
+
+                        if (
+                            item.phone &&
+                            String(item.phone) !== phone
+                        ) {
+                            return;
+                        }
+
+                        const uniqueId =
+                            item.id ||
+                            item.claimId ||
+                            (
+                                item.code +
+                                "_" +
+                                item.claimedAt +
+                                "_" +
+                                index
+                            );
+
+                        if (seenClaims.has(uniqueId)) {
+                            return;
+                        }
+
+                        seenClaims.add(uniqueId);
+
+                        total += moneyValue(
+                            item.amount ??
+                            item.reward ??
+                            item.rewardAmount ??
+                            item.value ??
+                            0
+                        );
+
+                    });
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Unable to read gift claims:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        document.getElementById("totalEarnings")
+            .textContent = formatMoney(total);
+    }
+
+
+    /* =========================================
+       INVESTMENTS
+    ========================================= */
+
+    function updateInvestmentCount() {
+
+        const phone = getCurrentPhone();
+
+        let count = 0;
+
+        if (!phone) {
+
+            document.getElementById("investmentCount")
+                .textContent = "0";
+
+            document.getElementById("investmentMessage")
+                .textContent =
+                "No active investment yet.";
+
+            return;
+        }
+
+
+        for (
+            let i = 0;
+            i < localStorage.length;
+            i++
+        ) {
+
+            const key =
+                localStorage.key(i);
+
+            if (!key) {
+                continue;
+            }
+
+            if (!key.startsWith("myAircraft_")) {
+                continue;
+            }
+
+            const data =
+                localStorage.getItem(key);
+
+            if (!data) {
+                continue;
+            }
+
+            try {
+
+                const investments =
+                    JSON.parse(data);
+
+                const list =
+                    Array.isArray(investments)
+                        ? investments
+                        : [investments];
+
+                list.forEach(function(investment) {
+
+                    if (!investment) {
+                        return;
+                    }
+
+                    if (
+                        String(investment.phone || "") !==
+                        phone
+                    ) {
+                        return;
+                    }
+
+                    const status =
+                        String(
+                            investment.status || ""
+                        )
+                        .toLowerCase()
+                        .trim();
+
+                    if (
+                        status === "" ||
+                        status === "active" ||
+                        status === "pending approval" ||
+                        status === "approved" ||
+                        status === "running" ||
+                        status === "earning"
+                    ) {
+
+                        count++;
+
+                    }
+
+                });
+
+            } catch (error) {
+
+                console.error(
+                    "Unable to read investment:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        document.getElementById("investmentCount")
+            .textContent = count;
+
+
+        if (count > 0) {
+
+            document.getElementById("investmentMessage")
+                .textContent =
+                count === 1
+                    ? "1 active investment."
+                    : count + " active investments.";
+
+        } else {
+
+            document.getElementById("investmentMessage")
+                .textContent =
+                "No active investment yet.";
+
+        }
+
+    }
+
+
+    /* =========================================
+       NAVIGATION
+    ========================================= */
+
+    function goToDashboard() {
+        window.location.href = "dashboard.html";
+    }
+
+    function goToCrafts() {
+        window.location.href = "crafts.html";
+    }
+
+    function goToTransactions() {
+        window.location.href = "transactions.html";
+    }
+
+    function goToProfile() {
+        window.location.href = "profile.html";
+    }
+
+    function goToGiftCodes() {
+        window.location.href = "gift-codes.html";
+    }
+
+    function goToCustomerService() {
+        window.location.href = "customer-service.html";
+    }
+
+    function goToNetwork() {
+        window.location.href = "network.html";
+    }
+
+    function goToEarnings() {
+        window.location.href = "earnings.html";
+    }
+
+    function goToDeposit() {
+        window.location.href = "deposit.html";
+    }
+
+    function goToWithdrawal() {
+        window.location.href = "withdrawal.html";
+    }
+
+    function goToMyAircraft() {
+        window.location.href = "my-aircraft.html";
+    }
+
+
+    /* =========================================
+       LOGOUT
+    ========================================= */
+
+    function logout() {
+
+        localStorage.removeItem("skyrentUser");
+        localStorage.removeItem("username");
+
+        window.location.href = "index.html";
+    }
+
+
+    /* =========================================
+       UPDATE DASHBOARD
+    ========================================= */
+
+    function updateDashboard() {
+
+        updateUsername();
+        updateAccountBalance();
+        updateTotalDeposited();
+        updateTotalEarnings();
+        updateTotalWithdrawn();
+        updateInvestmentCount();
+
+    }
+
+
+    /* =========================================
+       INITIAL LOAD
+    ========================================= */
+
+    updateDashboard();
+
+
+    /* =========================================
+       REFRESH WHEN STORAGE CHANGES
+    ========================================= */
+
+    window.addEventListener(
+        "storage",
+        function(event) {
+
+            if (
+                !event.key ||
+                event.key.startsWith("balance_") ||
+                event.key.startsWith("deposits_") ||
+                event.key.startsWith("withdrawals_") ||
+                event.key.startsWith("earningsHistory_") ||
+                event.key.startsWith("myAircraft_") ||
+                event.key === "referralCommissions" ||
+                event.key === "giftCodeClaims" ||
+                event.key === "skyrentUser"
+            ) {
+
+                updateDashboard();
+
+            }
+
+        }
+    );
+
+
+    /* =========================================
+       REFRESH WHEN RETURNING TO PAGE
+    ========================================= */
+
+    document.addEventListener(
+        "visibilitychange",
+        function() {
+
+            if (
+                document.visibilityState === "visible"
+            ) {
+
+                updateDashboard();
+
+            }
+
+        }
+    );
+
+
+    /* =========================================
+       AUTO REFRESH
+    ========================================= */
+
+    setInterval(
+        updateDashboard,
+        1000
+    );
+
+</script>
+
+</body>
+</html>
+```
+
+
