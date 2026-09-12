@@ -1,4 +1,4 @@
-⁸<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="en">
 
@@ -1668,6 +1668,7 @@ function updateExistingReferralData() {
 
 }
 
+
 function loginUser(email, password){
 
     let users = JSON.parse(
@@ -1698,8 +1699,6 @@ function loginUser(email, password){
 }
 
 
-
-    
 /* =====================================================
    MIGRATE OLD ACCOUNT
 ===================================================== */
@@ -2904,14 +2903,13 @@ function login(event) {
     ========================= */
 
     localStorage.setItem(
-    "skyrentLoginPhone",
-    user.phone
-);
 
-console.log(
-    "Saved login phone:",
-    localStorage.getItem("skyrentLoginPhone")
-);
+        "username",
+
+        user.name
+
+    );
+
 
     /* =========================
        SUCCESS MESSAGE
