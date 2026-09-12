@@ -1747,6 +1747,146 @@ body{
 
 <script>
 
+/* =========================================
+   SKYRENT DASHBOARD SESSION CHECK
+========================================= */
+
+function getCurrentUser(){
+
+    // Get logged-in phone
+    const loginPhone =
+        localStorage.getItem(
+            "skyrentLoginPhone"
+        );
+
+
+    // No login session
+    if(!loginPhone){
+
+        window.location.href =
+            "index.html";
+
+        return null;
+    }
+
+
+    // Get all registered users
+    const users =
+        JSON.parse(
+            localStorage.getItem(
+                "skyrentUsers"
+            )
+        ) || [];
+
+
+    // Find matching user
+    const user =
+        users.find(
+            account =>
+            String(account.phone) ===
+            String(loginPhone)
+        );
+
+
+    // User not found
+    if(!user){
+
+        localStorage.removeItem(
+            "skyrentLoginPhone"
+        );
+
+        window.location.href =
+            "index.html";
+
+        return null;
+    }
+
+
+    return user;
+}
+
+
+/* =========================================
+   LOAD USER DATA
+========================================= */
+
+const currentUser =
+    getCurrentUser();
+
+
+if(currentUser){
+
+
+    // Name
+    const nameElement =
+        document.getElementById(
+            "userName"
+        );
+
+    if(nameElement){
+
+        nameElement.innerText =
+            currentUser.name ||
+            "SkyRent User";
+    }
+
+
+
+    // Phone
+    const phoneElement =
+        document.getElementById(
+            "userPhone"
+        );
+
+    if(phoneElement){
+
+        phoneElement.innerText =
+            currentUser.phone ||
+            "";
+    }
+
+
+
+    // Referral Code
+    const referralElement =
+        document.getElementById(
+            "userReferralCode"
+        );
+
+    if(referralElement){
+
+        referralElement.innerText =
+            currentUser.referralCode ||
+            "No code";
+    }
+
+
+
+    // Balance
+    const balanceElement =
+        document.getElementById(
+            "userBalance"
+        );
+
+
+    if(balanceElement){
+
+        const balance =
+            localStorage.getItem(
+                "balance_" +
+                currentUser.phone
+            ) || "0";
+
+
+        balanceElement.innerText =
+            "₱" +
+            Number(balance)
+            .toFixed(2);
+    }
+
+}
+
+      
 
 /* =====================================================
    GET CURRENT USER
