@@ -1668,7 +1668,38 @@ function updateExistingReferralData() {
 
 }
 
+function loginUser(email, password){
 
+    let users = JSON.parse(
+        localStorage.getItem("skyrentUsers")
+    ) || [];
+
+    let user = users.find(
+        u => u.email === email && u.password === password
+    );
+
+    if(user){
+
+        // Save current logged-in user
+        localStorage.setItem(
+            "skyrentUser",
+            JSON.stringify(user)
+        );
+
+        // Go to dashboard
+        window.location.href = "dashboard.html";
+
+    }else{
+
+        alert("Invalid email or password");
+
+    }
+
+}
+
+
+
+    
 /* =====================================================
    MIGRATE OLD ACCOUNT
 ===================================================== */
