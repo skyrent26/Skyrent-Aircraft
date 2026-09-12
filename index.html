@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+⁸<!DOCTYPE html>
 
 <html lang="en">
 
@@ -2904,13 +2904,14 @@ function login(event) {
     ========================= */
 
     localStorage.setItem(
+    "skyrentLoginPhone",
+    user.phone
+);
 
-        "username",
-
-        user.name
-
-    );
-
+console.log(
+    "Saved login phone:",
+    localStorage.getItem("skyrentLoginPhone")
+);
 
     /* =========================
        SUCCESS MESSAGE
